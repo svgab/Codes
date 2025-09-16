@@ -1,4 +1,3 @@
-
 arr = [2, 7, 11, 15]
 i = 9
 
@@ -12,7 +11,7 @@ class Solution:
         for x in range(len(lst)):
             temp = lst[x + 1:]
             if target - lst[x] in temp:
-                return (x, temp.index(target - lst[x]) + x + 1)
+                return [x, temp.index(target - lst[x]) + x + 1]
 
 
 my_solution = Solution()
