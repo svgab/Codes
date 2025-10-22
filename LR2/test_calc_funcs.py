@@ -1,6 +1,7 @@
 import unittest
 import os
 import calc
+from exceptions import SettingsFileNotFoundError, EpsilonKeyNotFound
 
 
 class TestCalculateFunction(unittest.TestCase):
@@ -56,7 +57,7 @@ class TestLoadParamsFunction(unittest.TestCase):
 
     def test_file_not_found(self):
         # Тест отсутствия файла
-        with self.assertRaises(FileNotFoundError):
+        with self.assertRaises(SettingsFileNotFoundError):
             calc.load_params('non_existent_file.ini')
 
     def test_epsilon_in_range(self):
@@ -72,7 +73,8 @@ class TestLoadParamsFunction(unittest.TestCase):
                 epsilon = calc.load_params(self.test_config)
                 self.assertEqual(epsilon, value)
             except ValueError:
-                self.fail(f"Epsilon {value} должен быть в допустимом диапазоне")
+                self.fail(f"Epsilon {value} должен быть\
+                           в допустимом диапазоне")
 
     def test_epsilon_out_of_range_in_file(self):
         # Тест вне диапазона в файле
@@ -96,8 +98,10 @@ class TestLoadParamsFunction(unittest.TestCase):
             f.write("smth=4\n")
 
         # Должен вернуть значение по умолчанию
-        epsilon = calc.load_params(self.test_config)
-        self.assertEqual(epsilon, 0.0001)
+        # epsilon = calc.load_params(self.test_config)
+        # self.assertEqual(epsilon, 0.0001)
+        with self.assertRaises(EpsilonKeyNotFound):
+            calc.load_params(self.test_config)
 
     def test_comments_in_file(self):
         # Тест файла с комментариями
