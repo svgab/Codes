@@ -1,4 +1,5 @@
 import os
+import exceptions
 """
 1  Напишите функцию (calculate), которая принимает на вход 2 операнда,
 возможно целые, возможно дробные , выполняет деление операнда 1 на операнд 2
@@ -38,8 +39,8 @@ def load_params(config_file='C:/Codes/p/3 sem/lab2/settings.ini'):
     """
     # Проверяем существование файла
     if not os.path.exists(config_file):
-        raise FileNotFoundError(f"Конфигурационный файл {config_file}не найден"
-                                )
+        raise exceptions.SettingsFileNotFoundError()
+    # FileNotFoundError(f"Конфигурационный файл {config_file}не найден")
 
     try:
         with open(config_file, 'r', encoding='utf-8') as file:
@@ -66,12 +67,12 @@ def load_params(config_file='C:/Codes/p/3 sem/lab2/settings.ini'):
 
                         return epsilon
             # Если epsilon не найден, возвращаем значение по умолчанию
-            return 0.0001
+            raise exceptions.EpsilonKeyNotFound()
 
     except ValueError:
         raise ValueError("Некорректный формат числа в конфигурационном файле")
-    except Exception:
-        raise Exception("Ошибка при чтении конфигурационного файла")
+    # except Exception:
+    #    raise Exception("Ошибка при чтении конфигурационного файла")
 
 
 print(calculate(10, 3, load_params()))
